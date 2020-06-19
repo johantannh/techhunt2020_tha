@@ -1,42 +1,80 @@
 # techhunt2020_tha
-Take home assignment for Govtech TechHunt2020
+Take home assignment for Govtech TechHunt2020. This project is done using `Laravel 7.16.1`
 
-## Initial Setup
+# 1. Initial Setup
 
 You only need to do the following steps the first time you have cloned the repository.
 
-> Pre-Requisite: Make sure you have docker installed
+## 1.1. Pre-Requisites
 
-1. Run the following command in this folder's root directory. Wait for a while for the environment to be setup.
-```bash
-docker-compose build; docker-compose up;
-```
+1. Install docker and docker compose
+2. Install VirtualBox
 
-2. Make copy of .env file 
+### Installing docker
+#### Windows 8.1 and below
+1. [Install Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/)
+2. Run Docker Toolbox - It is a VM that runs in the background
+
+### Windows 10
+1. Docker support should come together with Windows 10
+
+#### Linux(Ubuntu 18.04)
+To be written
+
+## Instructions To Run App
+1. Make a copy of .env file 
 ```bash
 cp .env.example .env
 ```
 
-3. Install composer files
+2. Open .env file, fill in the `DB_PASSWORD` variable to be anything you want. Below is an example of what you can name it as.
+```
+DB_PASSWORD=testpassword
+```
+
+3. Run the following command in this folder's root directory. Wait for a while for the environment to be setup.
+```bash
+docker-compose build; docker-compose up;
+```
+
+4. Install composer files
 ```bash
 docker exec techhunt2020-app composer install
 ```
 
-4. Create Employees Table in Database using the command below.
+5. Create Employees Table in Database using the command below.
 ```bash
 docker exec techhunt2020-app php artisan migrate --path=//database/migrations/standalone_mig
 ```
 
-## Required steps every run
-1. Get the mysql docker container's ip address
+## 1.2. Required steps every run
+
+The 2nd or more times you start running the app, you can just use these steps instead.
+
+1. Make docker-compose start the containers. 
+```bash
+docker-compose up;
+```
+
+2. Get the mysql docker container's ip address
 ```
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' techhunt2020-db
 ```
 
-2. Change .env file, `DB_HOST` parameter to ip address obtained in step 1.
+3. Change .env file, `DB_HOST` parameter to ip address obtained in step 1.
 
+## 1.3. Closing app
+ - Either close the docker-compose bash that is running OR 
+ - run the following command `docker-compose down;`
 
-## Running tests
+# 2. Application 
+## 2.1 Generating Data
+1. Generate 50 Random Employee Data
+```
+docker exec techhunt2020-app php artisan db:seed --class=EmployeeSeeder
+```
+
+## 2.2. Running tests
 
 1. Run all tests
 ```bash
