@@ -40,8 +40,8 @@ class EmployeesImport implements ToCollection, WithStartRow
                 }
             }
         } else if(count($rows) == 0){
-            $this->errors[] = "Empty file"
-        } else{
+            $this->errors[] = "Empty file";
+        } else {
             foreach ($rows as $row) 
             {
                 Employee::updateOrCreate([
