@@ -16,3 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/users/upload', 'EmployeeController@getUploadPage')->name('show_upload');
+
+// Considered an API call
+Route::post('/users/upload', 'EmployeeController@uploadEmployees')->name('submit_upload');

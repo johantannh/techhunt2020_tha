@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS `employees`;
 
 CREATE TABLE `employees` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `id` varchar(255) unsigned NOT NULL AUTO_INCREMENT,
   `login` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `salary` DOUBLE(16,2) NOT NULL DEFAULT '0',
