@@ -1,5 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.main')
+@section('head')
+@section('title')
+<title>Upload Employee CSV</title>
+@endsection
 
+@endsection
 @section('content')
     <div class="container">
         <div class="row">
