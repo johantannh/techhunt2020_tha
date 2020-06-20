@@ -11,12 +11,17 @@ You only need to do the following steps the first time you have cloned the repos
 2. Install VirtualBox
 
 ### Installing docker
-#### Windows 8.1 and below
+
+### Windows 10 64-bit: Pro, Enterprise, or Education (Build 15063 or later).
+Docker is supported in these versions of Windows.
+
+1. Install [Docker Desktop](https://docs.docker.com/docker-for-windows/install/)
+
+#### Windows without docker support
+Other Windows versions will require **Docker Toolbox** and **VirtualBox**.
+
 1. [Install Docker Toolbox](https://docs.docker.com/toolbox/toolbox_install_windows/)
 2. Run Docker Toolbox - It is a VM that runs in the background
-
-### Windows 10
-1. Docker support should come together with Windows 10
 
 #### Linux(Ubuntu 18.04)
 To be written
@@ -42,14 +47,24 @@ docker-compose build; docker-compose up;
 docker exec techhunt2020-app composer install
 ```
 
-5. Create Employees Table in Database using the command below.
+5. Get the mysql docker container's ip address
+```
+docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' techhunt2020-db
+```
+
+6. Change .env file, `DB_HOST` parameter to ip address obtained in step 5. An example is shown below.
+```
+DB_HOST=172.0.18.100
+```
+
+7. Create Employees Table in Database using the command below.
 ```bash
 docker exec techhunt2020-app php artisan migrate --path=//database/migrations/standalone_mig
 ```
 
 ## 1.2. Required steps every run
 
-The 2nd or more times you start running the app, you can just use these steps instead.
+The subsequent time you start running the app, you must use the following steps below to get the app  to work.
 
 1. Make docker-compose start the containers. 
 ```bash

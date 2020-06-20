@@ -17,6 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/users/upload', 'EmployeeController@getUploadPage')->name('show_upload');
+Route::get('/users/dashboard', 'EmployeeController@getEmployeeDashboard')->name('get_dashboard');
+Route::get('/users', 'EmployeeController@getEmployeesData')->name('get_emps_data');
 
 // Considered an API call
 Route::post('/users/upload', 'EmployeeController@uploadEmployees')->name('submit_upload');
