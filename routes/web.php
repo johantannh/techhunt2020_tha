@@ -18,7 +18,9 @@ Route::get('/', function () {
 });
 Route::get('/users/upload', 'EmployeeController@getUploadPage')->name('show_upload');
 Route::get('/users/dashboard', 'EmployeeController@getEmployeeDashboard')->name('get_dashboard');
-Route::get('/users', 'EmployeeController@getEmployeesData')->name('get_emps_data');
+Route::get('/users/getdashboarddata', 'EmployeeController@getDashboardData')->name('get_dashboard_data');
 
-// Considered an API call
+
+// Considered API calls
+Route::get('/users', 'EmployeeController@getEmployeesData')->name('get_emps_data');
 Route::post('/users/upload', 'EmployeeController@uploadEmployees')->name('submit_upload');

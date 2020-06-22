@@ -62,6 +62,22 @@ DB_HOST=172.0.18.100
 docker exec techhunt2020-app php artisan migrate --path=//database/migrations/standalone_mig
 ```
 
+8. Generate key for secure php session
+```bash
+docker exec techhunt2020-app php artisan key:generate
+```
+
+9. Access webpage 
+    
+    You can access the webpage using `<ip_addr>:8000`.
+    
+    1. In Docker Toolbox, run the command below to get the docker ip address.
+    ```bash
+    $ docker-machine ip
+    192.168.99.100 # This is the ip returned
+    ```
+    2. Otherwise, accessing `localhost:8000` will do
+
 ## 1.2. Required steps every run
 
 The subsequent time you start running the app, you must use the following steps below to get the app  to work.

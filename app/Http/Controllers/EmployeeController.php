@@ -121,4 +121,29 @@ class EmployeeController extends Controller
     public function getEmployeeDashboard(Request $request){
         return view('dashboard');
     }
+
+    public function getDashboardData(Request $request)
+    {   
+        $request->offset = $request->start;
+        $sortIndex = "";
+        switch($request->order[0]["column"]){
+            case 0: $sortIndex = "id"; break;
+            case 1: $sortIndex = "login"; break;
+            case 2: $sortIndex = "name"; break;
+            case 3: $sortIndex = "salary"; break;
+        }
+        $sortDir = ($request->order[0]["dir"] == "asc") ? "+" : (($request->order[0]["dir"] == "desc") ? "-" : "");
+        $request->sort = $sortDir."".$sortIndex;
+
+        $response = $this->getEmployeesData($request);
+        
+        $employees = Employee::count();
+        
+        $response_arr['data'] = $response->getData();
+        $response_arr['draw'] = $request->draw;
+        $response_arr['recordsTotal'] = $employees;
+        $response_arr['recordsFiltered'] = $employees;
+
+        return response()->json($response_arr, 200);
+    }
 }

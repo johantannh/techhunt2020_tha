@@ -96,8 +96,7 @@ class EmployeeGetDataTest extends TestCase
         $response = $this->get('/users?'.$params);
         
         $response->assertStatus(200);
-        $response->assertJsonCount(10, $key = null);
-
+        
         $hasLesserSalary = true;
         $currSal = "";
         foreach($response->getData() as $item){
