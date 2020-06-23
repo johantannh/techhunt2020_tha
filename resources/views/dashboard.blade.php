@@ -188,6 +188,7 @@ $(document).ready( function () {
 		pageLength: 30,
 		paging: true,
 		responsive: true,
+		searching: false,
 	});
 
 	$(document).on('click', "#new-item", function() {

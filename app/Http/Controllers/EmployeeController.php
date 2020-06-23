@@ -38,17 +38,23 @@ class EmployeeController extends Controller
             ], 400);
         }
 
-        $empImport = new EmployeesImport;
-        $import = Excel::import($empImport, request()->file('file'));
+        try{
+            $empImport = new EmployeesImport;
+            $import = Excel::import($empImport, request()->file('file'));
 
-        if($empImport->getErrors()){
+            if($empImport->getErrors()){
+                return response()->json([
+                    'message' => "fail",
+                    //'rows' => $empImport->getRows(),
+                    //'errors' => $empImport->getErrors()
+                ], 400);
+            } else{
+                return response('success', 200)->header('Content-Type', 'text/plain');
+            }
+        } catch (\Exception $e){
             return response()->json([
-                'message' => "fail",
-                //'rows' => $empImport->getRows(),
-                //'errors' => $empImport->getErrors()
+                'message' => "error",
             ], 400);
-        } else{
-            return response('success', 200)->header('Content-Type', 'text/plain');
         }
     }
 

@@ -62,6 +62,11 @@ DB_HOST=172.0.18.100
 docker exec techhunt2020-app php artisan migrate
 ```
 
+8. Generate Employee Data
+```
+docker exec techhunt2020-app php artisan db:seed --class=EmployeeSeeder
+```
+
 8. Generate key for secure php session
 ```bash
 docker exec techhunt2020-app php artisan key:generate
@@ -100,11 +105,6 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' tec
 
 # 2. Application 
 ## 2.1 Database
-### Generating Data
-1. Generate 50 Random Employee Data
-```
-docker exec techhunt2020-app php artisan db:seed --class=EmployeeSeeder
-```
 
 ### Creating new table
 1. Copy the migration files into the standalone_mig folder
@@ -116,12 +116,17 @@ docker exec techhunt2020-app php artisan migrate --path=//database/migrations/st
 ### Recreate and reseed
 1. Update any seeds
 ```
-docker exec techhunt2020-app compose dump-autoload
+docker exec techhunt2020-app composer dump-autoload
 ```
 
 2. Clean migrate all tables and reseed them all
 ```
 docker exec techhunt2020-app php artisan migrate:fresh --seed
+```
+
+3. Reseed database
+```
+docker exec techhunt2020-app php artisan db:seed --class=EmployeeSeeder
 ```
 
 ## 2.2. Running tests
