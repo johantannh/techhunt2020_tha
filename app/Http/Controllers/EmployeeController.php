@@ -10,6 +10,7 @@ use App\Imports\EmployeesImport;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class EmployeeController extends Controller
 {
@@ -107,7 +108,6 @@ class EmployeeController extends Controller
             $sort = Str::substr($sort, 1);
         }
 
-        //DB::table('roles')
         $employees = Employee::whereBetween('salary', [$minSalary, $maxSalary])
             ->orderBy($sort, $orderBy)
             ->limit($limit)
@@ -145,5 +145,98 @@ class EmployeeController extends Controller
         $response_arr['recordsFiltered'] = $employees;
 
         return response()->json($response_arr, 200);
+    }
+
+    public function createEmployee(Request $request){
+        // untested at the moment, Create frontend then verify it
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|distinct|unique:employees,id',
+            'login' => 'required|distinct|unique:employees,login',
+            'name' => 'required',
+            'salary' => 'required|numeric|min:0'
+        ]);
+
+        $errors = [];
+        if ($validator->fails()) {
+            
+            foreach ($validator->errors()->messages() as $messages) {
+                foreach ($messages as $error) {
+                    $errors[] = $error;
+                }
+            }
+            //return back()->with('error', implode(' ',$errors));
+            return response('',400);
+            //return response()->json($errors, 400);
+        }
+        
+        $employee = new Employee;
+        $employee->id = $request->id;
+        $employee->login = $request->login;
+        $employee->name = $request->name;
+        $employee->salary = $request->salary;
+        $employee->save();
+
+        return response('', 200);
+    }
+
+    public function getEmployee(Request $request){
+        $urlEmpId = $request->id;
+        $employee = Employee::find($urlEmpId);
+        if(!$employee){
+            return response('',400);
+        }
+        return response()->json($employee, 200);
+    }
+
+    public function updateEmployee(Request $request){
+        $urlEmpId = $request->id;
+        $employee = Employee::find($urlEmpId);
+
+        if(!$employee){
+            //return back()->with('error', "Invalid employee ID");
+            return response('',400);
+        }
+        
+        $validator = Validator::make($request->all(), [
+            'edit-id' => 'required|unique:employees,id,'.$employee->id,
+            'login' => [
+                'required',
+                Rule::unique('employees', 'login')->ignore($employee->login, 'login')
+            ],
+            'name' => 'required',
+            'salary' => 'required|numeric|min:0',
+        ]);
+
+        $errors = [];
+        if ($validator->fails()) {
+            
+            foreach ($validator->errors()->messages() as $messages) {
+                foreach ($messages as $error) {
+                    $errors[] = $error;
+                }
+            }
+            //return back()->with('error', implode(' ',$errors));
+            //return response('',400);
+            return response()->json($errors, 400);
+        }
+
+        $employee->id = $request['edit-id'];
+        $employee->login = $request->login;
+        $employee->name = $request->name;
+        $employee->salary = $request->salary;
+        $employee->save();
+        
+        return response('', 200);
+        //return back()->with('success','Employee \''.$id.'\' updated successfully');
+    }
+
+    public function deleteEmployee(Request $request){
+        $urlEmpId = $request->id;
+        $employee = Employee::find($urlEmpId);
+        if(!$employee){
+            return response('',400);
+        }
+        $employee->delete();
+        return response('', 200);
     }
 }

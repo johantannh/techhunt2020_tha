@@ -59,7 +59,7 @@ DB_HOST=172.0.18.100
 
 7. Create Employees Table in Database using the command below.
 ```bash
-docker exec techhunt2020-app php artisan migrate --path=//database/migrations/standalone_mig
+docker exec techhunt2020-app php artisan migrate
 ```
 
 8. Generate key for secure php session
@@ -99,15 +99,85 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' tec
  - run the following command `docker-compose down;`
 
 # 2. Application 
-## 2.1 Generating Data
+## 2.1 Database
+### Generating Data
 1. Generate 50 Random Employee Data
 ```
 docker exec techhunt2020-app php artisan db:seed --class=EmployeeSeeder
 ```
 
-## 2.2. Running tests
+### Creating new table
+1. Copy the migration files into the standalone_mig folder
+2. Run the following command
+```
+docker exec techhunt2020-app php artisan migrate --path=//database/migrations/standalone_mig
+```
 
+### Recreate and reseed
+1. Update any seeds
+```
+docker exec techhunt2020-app compose dump-autoload
+```
+
+2. Clean migrate all tables and reseed them all
+```
+docker exec techhunt2020-app php artisan migrate:fresh --seed
+```
+
+## 2.2. Running tests
 1. Run all tests
 ```bash
 docker exec techhunt2020-app php artisan test
+```
+
+## 3. Routes
+All the routes for the web app are in `routes/web.php`.
+
+### 3.1. Web 
+In this web app, apis are inside web.php as well.
+```
+GET /users              - Gets all employees
+POST /users/upload      - Upload employee excel
+
+GET /users/{id}         - Get single employee detail
+POST /users/{id}        - Create single employee
+PATCH /users/{id}       - Update employee
+DELETE /users/{id}      - Delete employee
+```
+
+### 3.2 APIs
+In this web app, apis are inside web.php as well.
+```
+GET /users              - Gets all employees
+POST /users/upload      - Upload employee excel
+
+GET /users/{id}         - Get single employee detail
+POST /users/{id}        - Create single employee
+PATCH /users/{id}       - Update employee
+DELETE /users/{id}      - Delete employee
+```
+
+## 4. API Input/Outputs
+Inputs required for the following urls
+
+```     
+POST /users/{id}  
+
+{
+    "id": <id of employee>,
+    "login": <login of employee>,
+    "name": <name of employee>,
+    "salary": <double xxx.xx>
+}
+```
+
+```     
+PATCH /users/{id}  
+
+{
+    "edit-id": <id of employee to update to>, // to prevent overwriting the id parameter, edit-id is used
+    "login": <login of employee>,
+    "name": <name of employee>,
+    "salary": <double xxx.xx>
+}
 ```

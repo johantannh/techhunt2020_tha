@@ -24,15 +24,15 @@ class EmployeeUploadTest extends TestCase
         
         $row1Split = explode(',', $row1);
         $this->assertDatabaseHas('employees', [
-                'id'        =>  $row1Split[0],
-                "login"     =>  $row1Split[1],
-                "name"      =>  $row1Split[2],
-                "salary"    =>  $row1Split[3]
+            "id"        =>  $row1Split[0],
+            "login"     =>  $row1Split[1],
+            "name"      =>  $row1Split[2],
+            "salary"    =>  $row1Split[3]
         ]);
 
         $row2Split = explode(',', $row2);
         $this->assertDatabaseHas('employees', [
-            'id'        =>  $row2Split[0],
+            "id"        =>  $row2Split[0],
             "login"     =>  $row2Split[1],
             "name"      =>  $row2Split[2],
             "salary"    =>  $row2Split[3]

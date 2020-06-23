@@ -2,7 +2,7 @@
     <!-- Sidebar -->
     <nav id="sidebar">
         <div class="sidebar-header">
-            <h3 >Govtech TechHunt2020</h3>
+            <h3>Govtech TechHunt2020</h3>
         </div>
 
         <ul class="list-unstyled components">

@@ -14,13 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 });
 Route::get('/users/upload', 'EmployeeController@getUploadPage')->name('show_upload');
 Route::get('/users/dashboard', 'EmployeeController@getEmployeeDashboard')->name('get_dashboard');
 Route::get('/users/getdashboarddata', 'EmployeeController@getDashboardData')->name('get_dashboard_data');
 
-
 // Considered API calls
 Route::get('/users', 'EmployeeController@getEmployeesData')->name('get_emps_data');
 Route::post('/users/upload', 'EmployeeController@uploadEmployees')->name('submit_upload');
+
+Route::get('/users/{id}', 'EmployeeController@getEmployee')->name('get_employee');
+Route::post('/users/{id}', 'EmployeeController@createEmployee')->name('create_employee');
+Route::patch('/users/{id}', 'EmployeeController@updateEmployee')->name('update_employee');
+Route::delete('/users/{id}', 'EmployeeController@deleteEmployee')->name('delete_employee');
